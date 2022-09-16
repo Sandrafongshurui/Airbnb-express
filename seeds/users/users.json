@@ -1,0 +1,31 @@
+[{
+    "firstName": "John",
+    "lastName": "Doe",
+    "gender": "male",
+    "email": "johndoe@email.com",
+    "password": "$2b$10$Aw/VHpqMdpwm3Fiix5tUqe9ZAIShN0JHB42ItCspFB9RAqmgB.KaW"
+  },{
+    "firstName": "Jane",
+    "lastName": "Doe",
+    "gender": "female",
+    "email": "janedoe@email.com",
+    "password": "$2b$10$Jcm8emZY8hLEbQV29aurnexssMpZFTY7grneX4eO/zzMg.dcWGtUK"
+  },{
+    "firstName": "Sarah",
+    "lastName": "Lee",
+    "gender": "female",
+    "email": "sarahlee@email.com",
+    "password": "$2b$10$JCtQR5thiXklOPvYBKQjjudC6QM0SSwkFqyALI6oRrio2tD8Z8v/K"
+  },{
+    "firstName": "Mickey",
+    "lastName": "Mouse",
+    "gender": "male",
+    "email": "mickey@email.com",
+    "password": "$2b$10$oZtI93C/W5SvwRzzo5Z7Yeojb3U695aM/IO0xhtwek3lStC8MAMNi"
+  },{
+    "firstName": "Harry",
+    "lastName": "Potter",
+    "gender": "male",
+    "email": "harry@email.com",
+    "password": "$2b$10$7KLgKCC0x0bG2omB2JWSGuxAVQQ547YldO1z5GwD8sidOLh/p5zNC"
+  }]
