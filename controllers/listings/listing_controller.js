@@ -1,12 +1,7 @@
 const listingModel = require("../../models/listing");
 const bookingModel = require("../../models/booking");
-// const ImageKit = require("imagekit");
 
-// const imagekit = new ImageKit({
-//   urlEndpoint: "https://ik.imagekit.io/ni6j3uv9n",
-//   publicKey: "public_POFNB8Fsvsbo11VI2T92PAnSOMY=",
-//   privateKey: process.env.IMAGEKIT_KEY,
-// });
+
 
 const listingController = {
   listListings: async (req, res) => {
@@ -23,7 +18,7 @@ const listingController = {
         return res.json(listings);
       } else {
         console.log("get lists");
-        listings = await listingModel.find({}).limit(100).sort([["createdAt", -1]]);
+        listings = await listingModel.find({}).limit(20).sort([["createdAt", -1]]);
         if (listings.length === 0) {
           //find returns array
           return res.status(404).json({ error: "no listing results" });
@@ -129,6 +124,7 @@ const listingController = {
       }
       return res.status(201).send("Listing Created Successfully");
     } catch (error) {
+      console.log(error)
       return res.status(500).json({ error: "failed to create listing" });
     }
   },
