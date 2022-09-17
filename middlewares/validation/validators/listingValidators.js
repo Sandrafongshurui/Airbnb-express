@@ -21,7 +21,7 @@ const validators = {
       bathrooms: yup.number().required(),
       amenities: yup.string(),
       price: yup.number().required(),
-      images_url: yup.string(),
+      images_url: yup.string(),//validation done in the middleware
       address_1: yup.string().required(),
       address_2: yup.string(),
       postal_code: yup.number().required(),

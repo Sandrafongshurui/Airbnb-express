@@ -1,5 +1,12 @@
 const listingModel = require("../../models/listing");
 const bookingModel = require("../../models/booking");
+// const ImageKit = require("imagekit");
+
+// const imagekit = new ImageKit({
+//   urlEndpoint: "https://ik.imagekit.io/ni6j3uv9n",
+//   publicKey: "public_POFNB8Fsvsbo11VI2T92PAnSOMY=",
+//   privateKey: process.env.IMAGEKIT_KEY,
+// });
 
 const listingController = {
   listListings: async (req, res) => {
@@ -16,7 +23,7 @@ const listingController = {
         return res.json(listings);
       } else {
         console.log("get lists");
-        listings = await listingModel.find({}).sort([['createdAt', -1]]);
+        listings = await listingModel.find({}).limit(100).sort([["createdAt", -1]]);
         if (listings.length === 0) {
           //find returns array
           return res.status(404).json({ error: "no listing results" });
@@ -62,7 +69,43 @@ const listingController = {
   },
   createListing: async (req, res) => {
     const userId = res.locals.userAuth.data.userId; //taken from res.locals.userAuth, verrified at login
+    console.log(req.file.thumbnailUrl);
     //const userId = "630f9ca501b6bed58f47cee6";
+    //   if(req.file){//multer midleware allows the req.file to come through
+    //     console.log("have req.file")
+    //     console.log(req.file)
+    //     console.log(req.file.buffer)
+    //     imagekit.upload({
+    //           file: req.file.buffer,
+    //           fileName: req.file.originalname, //required
+    //           folder: "listing_images"
+    //         },
+    //           //have their own inbuilt trycatch
+    //           function(err, response) {
+    //             if(err) {
+    //               return res.status(500).json({
+    //                 status: "failed",
+    //                 message: "An error occured during file upload. Please try again."
+    //               })
+    //             }else{
+    //                 // res.status(200).json({
+    //                 //     status: "sucess",
+    //                 //     message: "Successfully created"
+    //                 //   })
+    //                 console.log("------>", response)
+    //                 console.log("-----> store in dbs", response.thumbnailUrl)
+
+    //             }
+
+    //         })
+    // }else{
+    //     console.log("no req.file")
+    //     return res.status(500).json({
+    //         status: "failed",
+    //         message: "An image is required"
+    //       })
+    // }
+
     let listing = null;
 
     try {
@@ -73,6 +116,13 @@ const listingController = {
         //long
         //lat
       });
+      console.log(listing._id)
+
+      listingImage = await listingModel.findByIdAndUpdate(
+        { _id: listing._id },
+        { $push: { images_url: req.file.thumbnailUrl } },
+        { new: true }
+      );
 
       if (!listing) {
         return res.status(404).json();

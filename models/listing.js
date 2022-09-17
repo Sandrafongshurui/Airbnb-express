@@ -69,7 +69,7 @@ const listingSchema = new mongoose.Schema({
     images_url: [
       {
         type: String,
-        //required: true,
+        required: true,
         default:"-"
       },     
     ],

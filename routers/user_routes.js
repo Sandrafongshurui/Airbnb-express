@@ -6,6 +6,10 @@ const validation = require ("../middlewares/validation/validation")
 const listingValidators = require("../middlewares/validation/validators/listingValidators")
 const userValidators = require("../middlewares/validation/validators/userValidators")
 const authMiddleware = require('../middlewares/authorization/authmiddleware')
+const imageMethods = require("../middlewares/uploadImage/uploadImage")
+const multer = require("multer")
+const storage = multer.memoryStorage()
+const upload = multer({ storage: storage })
 
 //http://localhost:8000/api/v1/user
 const router = express.Router()
@@ -29,9 +33,9 @@ router.post('/book/:listing_id', authMiddleware, validation(listingValidators.pa
 //get,create, edit, delete each listing
 router.get('/listings', authMiddleware, listingController.listHostListings)//returns []
 router.get('/listing/:listing_id', authMiddleware, validation(listingValidators.params_id), bookingController.showListingBookings)//returns []
-router.post('/listing', authMiddleware, validation(listingValidators.createListing), listingController.createListing)//return 201
+router.post('/listing', authMiddleware,  upload.single("file"), imageMethods.uploadImage, listingController.createListing)//return 201
 router.patch('/listing/:listing_id', authMiddleware, validation(listingValidators.params_id),validation(listingValidators.createListing),listingController.editListing)// returns 201
 router.delete('/listing/:listing_id', authMiddleware,  validation(listingValidators.params_id), listingController.deleteListing)// return 201
-
+// validation(listingValidators.createListing), upload.array('photos', 12)upload.single("file")
 
 module.exports = router
