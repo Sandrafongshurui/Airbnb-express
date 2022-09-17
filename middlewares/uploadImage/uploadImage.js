@@ -1,17 +1,5 @@
 const ImageKit = require("imagekit");
 
-
-// const storage  = multer.diskStorage({
-//     destination: (req, file, cb) =>{
-//         //ensure that this folder already exists in your project directory
-//         cb(null, "fileuploads/");
-//     },
-//     filename: (req, file, cb)=>{
-//         cb(null, file.originalname)
-//     }
-// });
-
-
 const imagekit = new ImageKit({
     urlEndpoint: "https://ik.imagekit.io/ni6j3uv9n",
     publicKey: "public_POFNB8Fsvsbo11VI2T92PAnSOMY=",

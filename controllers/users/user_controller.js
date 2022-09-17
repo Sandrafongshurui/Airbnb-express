@@ -100,7 +100,7 @@ const userController = {
     }
 
     try {
-      user = await userModel.findOne({ _id: "630f9ca501b6bed58f47cee6" }); //cos the userAuth email is in a data opbject, when signed token at login
+      user = await userModel.findOne({ _id: userAuth }); //cos the userAuth email is in a data opbject, when signed token at login
       if (!user) {
         return res.status(404).json({ error: "user does not exsits" });
       }
@@ -148,7 +148,7 @@ const userController = {
     }
 
     try {
-        user = await userModel.findOneAndDelete({_id: "631b7175a1827ff2c9860d90"})
+        user = await userModel.findOneAndDelete({_id: userAuth})
         if (!user) {
           return res.status(404).json({ error: "user does not exsits" });
         }
