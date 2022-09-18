@@ -6,11 +6,6 @@ const imagekit = new ImageKit({
   privateKey: process.env.IMAGEKIT_PRIVATEKEY,
 });
 
-const thumbnailUrlArray = [];
-
-const pushToThumbnailArry = (url) => {
-  thumbnailUrlArray.push(url);
-};
 const imageMethods = {
   uploadImage: async (req, res, next) => {
     if (req.files) {
@@ -35,7 +30,7 @@ const imageMethods = {
                     "An error occured during file upload. Please try again.",
                 });
               } else {
-                resolve(response);
+                resolve(response.thumbnailUrl);
                 console.log("3 -", response);
                 console.log("4 - store in dbs", response.thumbnailUrl);
               }
@@ -45,7 +40,7 @@ const imageMethods = {
         });
       });
       const fileUrls = await Promise.all(promises);
-      req.files = fileUrls
+      req.files = [...fileUrls]
       return next()
     } else {
       console.log("no req.file");
