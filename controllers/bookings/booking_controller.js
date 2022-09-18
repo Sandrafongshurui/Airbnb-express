@@ -29,7 +29,8 @@ const bookingController = {
     try {
       trips = await bookingModel
         .find({ booked_by: userId })
-        .populate({ path: "listing" });
+        .populate({ path: "listing" })
+        .sort([["checkin_date", -1]]);
       console.log(trips);
       if(!trips){
         return res.status(404).json({ error: "no trips results" });

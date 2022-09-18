@@ -64,42 +64,7 @@ const listingController = {
   },
   createListing: async (req, res) => {
     const userId = res.locals.userAuth.data.userId; //taken from res.locals.userAuth, verrified at login
-    console.log(req.file.thumbnailUrl);
-    //const userId = "630f9ca501b6bed58f47cee6";
-    //   if(req.file){//multer midleware allows the req.file to come through
-    //     console.log("have req.file")
-    //     console.log(req.file)
-    //     console.log(req.file.buffer)
-    //     imagekit.upload({
-    //           file: req.file.buffer,
-    //           fileName: req.file.originalname, //required
-    //           folder: "listing_images"
-    //         },
-    //           //have their own inbuilt trycatch
-    //           function(err, response) {
-    //             if(err) {
-    //               return res.status(500).json({
-    //                 status: "failed",
-    //                 message: "An error occured during file upload. Please try again."
-    //               })
-    //             }else{
-    //                 // res.status(200).json({
-    //                 //     status: "sucess",
-    //                 //     message: "Successfully created"
-    //                 //   })
-    //                 console.log("------>", response)
-    //                 console.log("-----> store in dbs", response.thumbnailUrl)
-
-    //             }
-
-    //         })
-    // }else{
-    //     console.log("no req.file")
-    //     return res.status(500).json({
-    //         status: "failed",
-    //         message: "An image is required"
-    //       })
-    // }
+    console.log("6 -thumbnail array ------>", req.files);
 
     let listing = null;
 
@@ -111,11 +76,9 @@ const listingController = {
         //long
         //lat
       });
-      console.log(listing._id)
-
       listingImage = await listingModel.findByIdAndUpdate(
         { _id: listing._id },
-        { $push: { images_url: req.file.thumbnailUrl } },
+        { $push: { images_url:{$each : req.files } }},
         { new: true }
       );
 
