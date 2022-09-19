@@ -2,15 +2,18 @@
 const listingsJson = require("./data.json");
 const latLongJson = require("./latlong.json");
 const listingModel = require("../../models/listing");
-const axios = require("axios")
+const axios = require("axios");
+const { Console } = require("console");
 require('dotenv').config()
 const newLatLong =[]
+const hundredListings =[]
 
-const createListings = async () => {
+const createListings = async (listing) => {
   try {
+    console.log()
     console.log(`Creating listingss`);
     await listingModel.deleteMany({})
-    await listingModel.create(listingsJson);
+    await listingModel.create({listing});
     console.log(`Created listingss`);
   } catch (error) {
     console.log(`---->`,error);
@@ -35,50 +38,51 @@ const addField = async () => {
   console.log("addField ")
 }
 
-// const updateField = async () => {
-//   await listingModel.updateMany(
-//       {}, 
-//       { $set: { "address_1" : element } },
-//       {new: true}
-//   )
-//   console.log("addField ")
-// }
+const updateField = async () => {
+  await listingModel.updateMany(
+      {}, 
+      { $set: { "unavailable_dates" : [] } },
+      {new: true}
+  )
+  console.log("addField ")
+}
 
-const createCoordinates = () => {
+const createCoordinates = async () => {
   latLongJson.forEach((element)=>{
     newLatLong.push(`${element.latitude.$numberDecimal},${element.longtitude.$numberDecimal}`)
   })
-  getAddressFromCoord()
-}
-
-const getAddressFromCoord = () => {
-  newLatLong.forEach((coordinates)=>{
-    fetchAddressApi(coordinates)
+  const promises = newLatLong.map( async (coordinates, idx)=>{
+    if(idx<=100){
+      try {
+        const res = await axios.get(`http://api.positionstack.com/v1/reverse?access_key=${process.env.POSITION_STACK_API}&query=${coordinates}&limit=1`)
+        //console.log("------>", res.data.data[0].label)
+        const data = res.data.data
+        // console.log( data[0].label)
+        listingsJson[idx].address_1 = res.data.data[0].label
+        if(idx === 100){
+          console.log( listingsJson[idx].name)
+        }
+        
+        return res.data.data[0].label
+    
+      } catch (error) {
+        console.log("error", error)
+      }
+    } 
   })
-}
-
-const fetchAddressApi = async (coordinates) => {
+  await Promise.all(promises)
+  //console.log(listingsJson)
+  //createListings(listingsJson)
   try {
-    const res = await axios.get(`http://api.positionstack.com/v1/reverse?access_key=f36dd7172cd674894aa4d8c9b057d31c&query=${coordinates}&limit=1`)
-    const data = res.data.data
-    listingsJson.forEach(element=>{
-      // if(data[0].label == "undefined"){
-      //   element.address_1 = " "
-      // }else{
-      //   element.address_1 = data[0].label
-      // }
-      element.address_1 = data[0].label
-    })
-    //console.log(listingsJson)
-    //create new listings with the addresss filled
-    createListings(listingsJson)
-
+    console.log()
+    console.log(`Creating listingss`);
+    await listingModel.deleteMany({})
+    await listingModel.create(listingsJson);
+    console.log(`Created listingss`);
   } catch (error) {
-    console.log("error", error)
+    console.log(`---->`,error);
   }
-
 }
-
 
  
 //done after exported listingV1
@@ -113,4 +117,4 @@ const switchFields = async (arr) => {
 
 
 
-module.exports = createCoordinates();;
+module.exports = updateField();

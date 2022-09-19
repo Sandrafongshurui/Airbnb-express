@@ -5,6 +5,7 @@ const listingSchema = new mongoose.Schema({
     name: {
       type: String,
       required: true,
+      default:"No Name Provided"
     },
     description: {
       type: String,
@@ -13,7 +14,7 @@ const listingSchema = new mongoose.Schema({
     },
     property_type: {
       type: String,
-      //required: true
+      required: true,
       default:"Property type is Private"
     },
     accommodates: {
@@ -86,11 +87,11 @@ const listingSchema = new mongoose.Schema({
     postal_code: {
       type: Number,
       required: true,
-      default:"-"
+      default: 0
     },
     state: {
       type: String,
-      required: true,
+      //required: true,
       default:"-"
     },
     country: {

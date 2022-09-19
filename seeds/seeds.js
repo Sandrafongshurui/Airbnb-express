@@ -8,8 +8,9 @@ const seed = async () => {
     //! means exclude those files
   const requireAll = globAll.sync([
     'seeds/**/*.js',
+    'seeds/*.js',
     '!seeds/users/users.js',
-    '!seeds/config.js',
+    '!seeds/bookings/bookings.js',
     '!seeds/seeds.js'
   ]).map((filepath) => {
     console.log('Seeding: ', filepath)
