@@ -142,8 +142,8 @@ const bookingController = {
 
     try {
       trip = await bookingModel
-        .find({ _id: bookingId })
-      console.log(trips);
+      .findById({ _id: bookingId })
+      console.log(trip);
       if(!trip){
         return res.status(404).json({ error: "no trips results" });
       }
