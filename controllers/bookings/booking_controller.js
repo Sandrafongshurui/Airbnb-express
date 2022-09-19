@@ -7,24 +7,25 @@ const DateTime = luxon.DateTime;
 const bookingController = {
   showListingBookings: async (req, res) => {
     const listingId = req.params.listing_id; //taken from FE <link> to
-    let listingBookings = null
+    let listingBookings = null;
 
     try {
-      listingBookings = await bookingModel.find({ listing: listingId }).populate({ path: "booked_by" });
+      listingBookings = await bookingModel
+        .find({ listing: listingId })
+        .populate({ path: "booked_by" });
       console.log(listingBookings);
-      if(!listingBookings){
+      if (!listingBookings) {
         return res.status(404).json({ error: "no bookings results" });
       }
       return res.status(201).json(listingBookings);
     } catch (error) {
       return res.status(500).json({ error: "failed to get listing bookings" });
     }
-
   },
   showTrips: async (req, res) => {
-    const userId = res.locals.userAuth.data.userId
+    const userId = res.locals.userAuth.data.userId;
     //const userId = "630f9ca501b6bed58f47cee5"; //take from res.local auth?
-    let trips = null
+    let trips = null;
 
     try {
       trips = await bookingModel
@@ -32,7 +33,7 @@ const bookingController = {
         .populate({ path: "listing" })
         .sort([["checkin_date", -1]]);
       console.log(trips);
-      if(!trips){
+      if (!trips) {
         return res.status(404).json({ error: "no trips results" });
       }
       return res.json(trips);
@@ -43,7 +44,7 @@ const bookingController = {
   },
   editTrip: async (req, res) => {
     const bookingId = req.params.booking_id; //taken from FE <link> to
-    let booking  = null
+    let booking = null;
 
     try {
       booking = await bookingModel.findByIdAndUpdate(
@@ -55,16 +56,19 @@ const bookingController = {
         return res.status(404).json({ error: "Booking not found " });
       }
       console.log(booking);
-      return res.status(201).send("Booking Updated Successfully, a notification has been sent to the host");
+      return res
+        .status(201)
+        .send(
+          "Booking Updated Successfully, a notification has been sent to the host"
+        );
     } catch (error) {
       return res.status(500).json({ error: "failed to update Booking" });
     }
-
   },
   deleteTrip: async (req, res) => {
-    const bookingId = req.params.booking_id; //taken from FE <link> 
-    let booking = null
-    let listing = null
+    const bookingId = req.params.booking_id; //taken from FE <link>
+    let booking = null;
+    let listing = null;
 
     try {
       booking = await bookingModel.findById(bookingId).populate("listing");
@@ -72,36 +76,37 @@ const bookingController = {
         return res.status(404).json({ error: "Booking not found " });
       }
 
-      let idx = booking.listing.unavailable_dates.findIndex(element=> {
-       return element[0].toString() == booking.checkin_date.toString()
+      let idx = booking.listing.unavailable_dates.findIndex((element) => {
+        return element[0].toString() == booking.checkin_date.toString();
       });
 
       listing = await listingModel.findByIdAndUpdate(
         { _id: booking.listing._id },
-        {$pull : {unavailable_dates : booking.listing.unavailable_dates[idx]}},
-        {new: true}
+        {
+          $pull: { unavailable_dates: booking.listing.unavailable_dates[idx] },
+        },
+        { new: true }
       );
       if (!listing) {
         return res.status(404).json({ error: "Listing not found " });
       }
-      console.log("------->",listing);
+      console.log("------->", listing);
 
-      await bookingModel.findByIdAndDelete(bookingId)
+      await bookingModel.findByIdAndDelete(bookingId);
 
       return res.status(201).json("booking deleted Successfully");
     } catch (error) {
       return res.status(500).json({ error: "failed to delete booking" });
     }
-
   },
   bookTrip: async (req, res) => {
     //const listingId = "6316fda9d2571d6d3e58aef6"
     const listingId = req.params.listing_id; //take from FE link\
-    console.log(listingId)
-    const booked_by = res.locals.userAuth.data.userId
+    console.log(listingId);
+    const booked_by = res.locals.userAuth.data.userId;
     //const booked_by = "630f9ca501b6bed58f47cee5"; //take from res.local auth?
-    let booking = null
-    let listing = null
+    let booking = null;
+    let listing = null;
     const dateRangeArray = dateMethods.getDatesInRange(
       req.body.checkin_date,
       req.body.checkout_date
@@ -130,21 +135,21 @@ const bookingController = {
     } catch (error) {
       return res.status(500).json({ error: "failed to create booking" });
     }
-    
   },
   showTrip: async (req, res) => {
     //const listingId = "6316fda9d2571d6d3e58aef6"
     const bookingId = req.params.booking_id; //take from FE link\
-    console.log(bookingId)
+    console.log(bookingId);
     //const booked_by = res.locals.userAuth.data.userId
     //const booked_by = "630f9ca501b6bed58f47cee5"; //take from res.local auth?
-    let trip  = null
+    let trip = null;
 
     try {
       trip = await bookingModel
-      .findById({ _id: bookingId })
+        .find({ _id: bookingId })
+        .populate({ path: "listing" });
       console.log(trip);
-      if(!trip){
+      if (!trip) {
         return res.status(404).json({ error: "no trips results" });
       }
       return res.json(trip);
@@ -152,7 +157,6 @@ const bookingController = {
       res.status(500);
       return res.json({ error: "failed to list listings" });
     }
-    
   },
 };
 
