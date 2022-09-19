@@ -27,6 +27,7 @@ router.patch('/profile', authMiddleware, validation(userValidators.editProfile),
 router.delete('/profile', authMiddleware, userController.deleteProfile)// returns 201
 
 router.get('/trips', authMiddleware, bookingController.showTrips)//returns []
+router.get('/trip/:booking_id', authMiddleware, bookingController.showTrip)//returns []
 router.patch('/trip/:booking_id', authMiddleware, validation(listingValidators.params_id),validation(listingValidators.createBooking), bookingController.editTrip)// returns 201
 router.delete('/trip/:booking_id', authMiddleware, validation(listingValidators.params_id), bookingController.deleteTrip)// returns 201
 router.post('/book/:listing_id', authMiddleware, validation(listingValidators.params_id), validation(listingValidators.createBooking), bookingController.bookTrip)// returns 201

@@ -1,7 +1,7 @@
 
 // returns a function
 const validationMiddleware = (schema) => async (req, res, next) => {
-    console.log("req.file", req.file)
+    console.log("req.files", req.files)
     console.log("req.query", req.query)
     console.log("req.body",req.body)
     console.log("req.params",req.params)

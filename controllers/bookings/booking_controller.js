@@ -132,6 +132,28 @@ const bookingController = {
     }
     
   },
+  showTrip: async (req, res) => {
+    //const listingId = "6316fda9d2571d6d3e58aef6"
+    const bookingId = req.params.booking_id; //take from FE link\
+    console.log(bookingId)
+    //const booked_by = res.locals.userAuth.data.userId
+    //const booked_by = "630f9ca501b6bed58f47cee5"; //take from res.local auth?
+    let trip  = null
+
+    try {
+      trip = await bookingModel
+        .find({ _id: bookingId })
+      console.log(trips);
+      if(!trip){
+        return res.status(404).json({ error: "no trips results" });
+      }
+      return res.json(trip);
+    } catch (error) {
+      res.status(500);
+      return res.json({ error: "failed to list listings" });
+    }
+    
+  },
 };
 
 module.exports = bookingController;
