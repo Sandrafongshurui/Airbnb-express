@@ -64,7 +64,7 @@ const userController = {
     //token will pass back to BE through post/patch and go through authmiddleware to routes that requires authorization
     const token = jwt.sign(
       {
-        exp: Math.floor(Date.now() / 1000) + 60 * 60, // 1 hour
+        exp: Math.floor(Date.now() / 1000) + 60 * 120, // 1 hour
         data: userData,
       },
       process.env.JWT_SECRET
