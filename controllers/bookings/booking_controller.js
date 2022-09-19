@@ -97,6 +97,7 @@ const bookingController = {
   bookTrip: async (req, res) => {
     //const listingId = "6316fda9d2571d6d3e58aef6"
     const listingId = req.params.listing_id; //take from FE link\
+    console.log(listingId)
     const booked_by = res.locals.userAuth.data.userId
     //const booked_by = "630f9ca501b6bed58f47cee5"; //take from res.local auth?
     let booking = null
