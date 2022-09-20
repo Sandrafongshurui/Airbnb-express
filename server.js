@@ -17,7 +17,7 @@ app.use(express.urlencoded({extended: true}))
 app.use(express.json())
 
 app.use(cors({
-  origin: "https://sandrafongshurui.github.io/"
+  origin: "https://sandrafongshurui.github.io"
 
 }))
 
