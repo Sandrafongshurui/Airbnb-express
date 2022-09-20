@@ -23,7 +23,7 @@ const userValidator = {
         .string()
         .min(2, "Mininum 2 characters")
         .required(),
-      gender: yup.string().required(),
+      // gender: yup.string().required(),
       email: yup
         .string()
         .email("Valid email is required")
@@ -46,7 +46,7 @@ const userValidator = {
         .string()
         .min(2, "Mininum 2 characters")
         .required(),
-      gender: yup.string().required(),
+      // gender: yup.string().required(),
       email: yup
         .string()
         .email("Valid email is required")
