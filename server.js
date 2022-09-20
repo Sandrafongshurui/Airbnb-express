@@ -17,7 +17,8 @@ app.use(express.urlencoded({extended: true}))
 app.use(express.json())
 
 app.use(cors({
-  origin: '*'
+  origin: ['*',  "https://sandrafongshurui.github.io/Airbnb-react/" ]
+
 }))
 
 app.use('/api/v1', listingRouter)
