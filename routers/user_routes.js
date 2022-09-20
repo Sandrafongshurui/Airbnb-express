@@ -35,7 +35,7 @@ router.post('/book/:listing_id', authMiddleware, bookingController.bookTrip)// r
 //get,create, edit, delete each listing
 router.get('/listings', authMiddleware, listingController.listHostListings)//returns []
 router.get('/listing/:listing_id', authMiddleware, bookingController.showListingBookings)//returns []
-router.post('/listing', authMiddleware, validation(listingValidators.createListing), upload.any('files'), imageMethods.uploadImage, listingController.createListing)//return 201
+router.post('/listing', authMiddleware, upload.any('files'), imageMethods.uploadImage, listingController.createListing)//return 201
 router.patch('/listing/:listing_id', authMiddleware, listingController.editListing)// returns 201
 router.delete('/listing/:listing_id', authMiddleware, listingController.deleteListing)// return 201
 //  upload.array('file', 12),upload.single("file")validation(listingValidators.createListing)
